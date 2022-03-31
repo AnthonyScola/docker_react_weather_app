@@ -2,7 +2,7 @@
 Docker app built for serving a react application for the OpenWeather APIs
 
 <h2>Installation</h2>
-Tip: Before getting started, make sure you have Docker installed.
+Note: Before getting started, make sure you have Docker installed.
 <br><br>
 <ol>
   <li>Download and extract the source code.</li>
