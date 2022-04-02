@@ -4,5 +4,6 @@ COPY package.json .
 RUN npm install
 COPY . .
 ENV REACT_APP_LOCATION_NAME=Heidenheim
+ENV REACT_APP_COORDS=[48.679615,10.153576]
 EXPOSE 3000
 CMD ["npm", "start"]
