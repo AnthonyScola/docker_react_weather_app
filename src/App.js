@@ -1,19 +1,44 @@
 import React, { useEffect, useState } from 'react';
+import $ from 'jquery';
 import './App.css';
 import WeatherCard from './WeatherCard';
+
+window.$ = $;
 
 
 function App() {
   const [clockState, setClockState] = useState();
 
-  // Dynamically Updating Time for clock.
+  function SetTime() {
+    var timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
+    setClockState(timeString)
+  }
+
+  // Dynamically Updating Time and weather.
   useEffect(() => {
-    var timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
-    setClockState(timeString)
+
+    SetTime()
     setInterval(() => {
-    var timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
-    setClockState(timeString)
-    }, 1000);
+      SetTime()
+
+      //Use this code when everything is completed.
+      //api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=`${process.env.REACT_APP_OW_API_KEY}`
+      $.ajax({
+        url: "https://api.openweathermap.org/data/2.5/forecast?lat=48.679615&lon=10.153576&appid=a4755513bba8c114dcc6a4a09072a541",
+        headers: {
+          "accept": "application/json"
+        },
+        type: "GET",
+        success: function(data) {
+          console.log("Success!");
+          var my_data = data;
+          console.log(my_data.list[0].main);
+        },
+        fail:function(data) { console.log("No Dice!"); }
+      });
+
+
+    }, 5000); //Remember to change this back to a minute after testing...
   }, [])
 
   //Sets Default location to Heidenheim, Germany if not stated by docker variable.
