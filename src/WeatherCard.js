@@ -13,28 +13,33 @@ import day_snow from './res/weather_icons/PNG/day_snow.png';              //Snow
 import night_snow from './res/weather_icons/PNG/night_snow.png';          //Snow    @ Night time
 
 
-export default function WeatherCard({ weatherConds, cardDate }) {
+var conditionIconMap = {  'Clouds':     day_cloudy,
+                          'Fog':        fog,
+                          'Snow':       day_snow,
+                          'Tornado':    tornado,
+                          'Clear':      day_clear,
+                          'Rain':       day_rain
+}
 
-  
-  const dateMap = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+export default function WeatherCard({ weatherConds, cardDate }) {
 
   if ( !(("none").includes(weatherConds) || weatherConds === 'undefined') ) {
     return(
       <div className='col'>
-          <div className="card">
+          <div className="card weather-cards">
               <div className="card-body">
                   <h2 className="card-title">{cardDate}</h2>
-                  <img src={snow} alt={String(weatherConds.weather[0].main)}/>
+                  <span>{weatherConds.weather[0].main} | {Math.round(weatherConds.temp.day)}° C</span>
+                  <img src={conditionIconMap[weatherConds.weather[0].main]} title={weatherConds.weather[0].description}/>
                   <p>
-                    High: {(weatherConds.main.temp_max - 273.15).toFixed(2)}° C <br/>
-                    Low: {(weatherConds.main.temp_min - 273.15).toFixed(2)}° C
+                    High: {Math.round(weatherConds.temp.max)}° C <br/>
+                    Low: {Math.round(weatherConds.temp.min)}° C
                   </p>
                   <hr/>
                   <p>
-                    Currently: {(weatherConds.main.temp - 273.15).toFixed(2)}° C<br/>
-                    Percip: {parseInt(weatherConds.pop*100)}% <br/>
-                    humidity: {parseInt(weatherConds.main.humidity)}% <br/>
-                    wind: {(weatherConds.wind.speed).toFixed(2)} k/hr
+                    Percipitation: {parseInt(weatherConds.pop*100)}% <br/>
+                    humidity: {parseInt(weatherConds.humidity)}% <br/>
+                    wind: {(weatherConds.wind_speed).toFixed(2)} m/s
                   </p>
               </div>
           </div>
