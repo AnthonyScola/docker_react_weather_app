@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import {Chart as ChartJS, BarElement} from 'chart.js';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import moment from 'moment';
 import $ from 'jquery';
 import './App.css';
 import WeatherCard from './WeatherCard';
@@ -7,29 +10,30 @@ window.$ = $;
 
 function App() {
   //Setting clockState and weatherConds to be Reactive.
-  const [clockState, getClockState] = useState();
+  const [clockState, getclockState] = useState();
   const [weatherConds, getWeatherConds] = useState("none");   //EX: weatherConds.list[0].main Main Weather. Will return weather conditions of curent day.
 
 
   function SetTime() {  //Sets the current time and assigns value to getter.
-    var timeString = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
-    getClockState(timeString);
+    var timeData = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
+
+    getclockState(timeData);
   }
 
   function SetCondState() {  //Sets the current weather conditions and assigns value to getter.
     //Use this code when everything is completed.
     //api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=`${process.env.REACT_APP_OW_API_KEY}`
     $.ajax({
-      url: "https://api.openweathermap.org/data/2.5/forecast?lat=48.679615&lon=10.153576&appid=a4755513bba8c114dcc6a4a09072a541",
+      
+      url: "https://api.openweathermap.org/data/2.5/onecall?lat=48.679615&lon=10.153576&exclude=hourly&units=metric&appid=404f17d07ae83fb5978deb6548df50e4",
       headers: {
         "accept": "application/json"
       },
       type: "GET",
       success: function(data) {
-        console.log("Success!");
-        getWeatherConds(data.list);
+        getWeatherConds(data.daily);
       },
-      fail:function(data) { console.log("No Dice!"); }
+      fail:function(e) { console.log(e); }
     });
   }
 
@@ -57,18 +61,36 @@ function App() {
     locationName = 'Heidenheim';
   }
 
+  const cardDeck = [];
+
+  for (var i in weatherConds) {
+
+    if (i == 0){
+      var dateName = "Today";
+    } else if (i == 1) {
+      var dateName = "Tomorrow";
+    } else {
+      var dateName = new Date(moment().add(i,'d')).toLocaleString([],{weekday: 'long', timeZone: 'Europe/Berlin'});
+    }
+
+    cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
+  }
+
   return (
-    <div className="App container-fluid">
+    <div className="App container">
       <header className="App-header">
         <h1>Weather in {locationName}</h1>
         <h1>{clockState}</h1>
       </header>
 
       <div className='row d-flex justify-content-around'>
-        <WeatherCard weatherConds={weatherConds[0]} cardDate={'Today'}/>
-        <WeatherCard weatherConds={weatherConds[1]} cardDate={'Tomorrow'}/>
-        <WeatherCard weatherConds={weatherConds[2]} cardDate={new Date().getDay()+2}/>
-        <WeatherCard weatherConds={weatherConds[3]} cardDate={new Date().getDay()+3}/> {/* THESE NEED TO BE SET TO BEING REACTIVE BEFORE PUBLISHING */}
+        {cardDeck}
+      </div>
+
+      <div className='row'>
+        <div className='col-12 card'>
+          <p>...</p>
+        </div>
       </div>
 
     </div>
