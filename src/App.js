@@ -1,24 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import {Chart as ChartJS, BarElement} from 'chart.js';
+import Luxon from 'luxon';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from 'moment';
 import $ from 'jquery';
 import './App.css';
 import WeatherCard from './WeatherCard';
+import { DateTime } from 'luxon';
 
 window.$ = $;
 
 function App() {
+
+  //Set location Defaults as fallback incase environment Variables fail.
+  var locationName = `${process.env.REACT_APP_LOCATION_NAME}`;
+  if (locationName === 'undefined'){
+    locationName = 'Heidenheim';
+  }
+
   //Setting clockState and weatherConds to be Reactive.
   const [clockState, getclockState] = useState();
-  const [weatherConds, getWeatherConds] = useState("none");   //EX: weatherConds.list[0].main Main Weather. Will return weather conditions of curent day.
+  const [weatherConds, getWeatherConds] = useState("none");
 
-
-  function SetTime() {  //Sets the current time and assigns value to getter.
+  //Sets the current time and assigns value to getter.
+  function SetTime() {
     var timeData = new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit', timeZone: 'Europe/Berlin'});
 
     getclockState(timeData);
   }
+
 
   function SetCondState() {  //Sets the current weather conditions and assigns value to getter.
     //Use this code when everything is completed.
@@ -36,6 +44,7 @@ function App() {
       fail:function(e) { console.log(e); }
     });
   }
+
 
   // Dynamically Updating Time and weather.
   useEffect(() => {
@@ -55,22 +64,16 @@ function App() {
     }, 1000);
   }, []);
 
-  //Sets Default location to Heidenheim, Germany if not stated by docker env variable.
-  var locationName = `${process.env.REACT_APP_LOCATION_NAME}`;
-  if (locationName === 'undefined'){
-    locationName = 'Heidenheim';
-  }
 
   const cardDeck = [];
-
   for (var i in weatherConds) {
 
-    if (i == 0){
+    if (i == 0){ // Sets the Day of the week for the weather cards.
       var dateName = "Today";
     } else if (i == 1) {
       var dateName = "Tomorrow";
     } else {
-      var dateName = new Date(moment().add(i,'d')).toLocaleString([],{weekday: 'long', timeZone: 'Europe/Berlin'});
+      var dateName = DateTime.now().setZone('Europe/Berlin').plus({days:i}).startOf('day').toLocaleString({weekday: 'long'});
     }
 
     cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
@@ -86,13 +89,6 @@ function App() {
       <div className='row d-flex justify-content-around'>
         {cardDeck}
       </div>
-
-      <div className='row'>
-        <div className='col-12 card'>
-          <p>...</p>
-        </div>
-      </div>
-
     </div>
   );
 }
