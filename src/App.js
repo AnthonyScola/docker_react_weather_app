@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import {Chart as ChartJS, BarElement} from 'chart.js';
+import Luxon from 'luxon';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import moment from 'moment';
 import $ from 'jquery';
 import './App.css';
 import WeatherCard from './WeatherCard';
@@ -70,7 +69,10 @@ function App() {
     } else if (i == 1) {
       var dateName = "Tomorrow";
     } else {
-      var dateName = new Date(moment().add(i,'d')).toLocaleString([],{weekday: 'long', timeZone: 'Europe/Berlin'});
+      var nowDate = new Date();
+
+      // add a day
+      var dateName = nowDate.setDate().toLocaleString([],{weekday: 'long', timeZone: 'Europe/Berlin'});
     }
 
     cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
@@ -85,12 +87,6 @@ function App() {
 
       <div className='row d-flex justify-content-around'>
         {cardDeck}
-      </div>
-
-      <div className='row'>
-        <div className='col-12 card'>
-          <p>...</p>
-        </div>
       </div>
 
     </div>
