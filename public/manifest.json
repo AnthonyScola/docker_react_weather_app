@@ -1,6 +1,7 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
+  "homepage": "https://www.scolastudio.com/weather/",
   "icons": [
     {
       "src": "favicon.ico",
