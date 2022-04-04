@@ -1,7 +1,7 @@
 {
   "short_name": "React App",
   "name": "Create React App Sample",
-  "homepage": "https://www.scolastudio.com/weather/",
+  "homepage": "/home/tj/Documents/github/docker_react_weather_app/",
   "icons": [
     {
       "src": "favicon.ico",
