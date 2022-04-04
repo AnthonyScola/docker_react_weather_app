@@ -1,5 +1,6 @@
 {
   "name": "docker_react_weather_app",
+  "homepage": "/weather",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -13,7 +14,8 @@
     "popper.js": "^1.16.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-scripts": "5.0.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "^5.0.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
