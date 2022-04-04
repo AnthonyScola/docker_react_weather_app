@@ -33,7 +33,7 @@ function App() {
     //api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=`${process.env.REACT_APP_OW_API_KEY}`
     $.ajax({
       
-      url: "https://api.openweathermap.org/data/2.5/onecall?lat=48.679615&lon=10.153576&exclude=hourly&units=metric&appid=404f17d07ae83fb5978deb6548df50e4",
+      url: "https://api.openweathermap.org/data/2.5/onecall?lat=48.679615&lon=10.153576&exclude=hourly&units=metric&appid=9700137cb136670ff26733ee23088067",
       headers: {
         "accept": "application/json"
       },
@@ -57,11 +57,11 @@ function App() {
       SetTime();
 
       seconds_passed++;
-      if (seconds_passed >=60) {  //Checks the weather every Minute.
+      if (seconds_passed >=15) {  //Checks the weather every 15 Minutes.
         seconds_passed = 0;
         SetCondState();
       }
-    }, 1000);
+    }, 60000);
   }, []);
 
 

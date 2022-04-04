@@ -1,5 +1,6 @@
 {
   "name": "docker_react_weather_app",
+  "homepage": "/weather",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
