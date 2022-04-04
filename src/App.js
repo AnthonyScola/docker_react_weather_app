@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import Luxon from 'luxon';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import $ from 'jquery';
 import './App.css';
 import WeatherCard from './WeatherCard';
+import ChartCard from './ChartCard';
 import { DateTime } from 'luxon';
 
 window.$ = $;
@@ -29,8 +29,10 @@ function App() {
 
 
   function SetCondState() {  //Sets the current weather conditions and assigns value to getter.
-    //Use this code when everything is completed.
-    //api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid=`${process.env.REACT_APP_OW_API_KEY}`
+    /*-- Use this when running in Docker ---------------------------------------------------------------------------------------------------------------------------------------\
+    | api.openweathermap.org/data/2.5/forecast?lat=`${process.env.REACT_APP_LAT}`&lon=`${process.env.REACT_APP_LON}`&appid=`${process.env.REACT_APP_OW_API_KEY}`  |
+    \--------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
     $.ajax({
       
       url: "https://api.openweathermap.org/data/2.5/onecall?lat=48.679615&lon=10.153576&exclude=hourly&units=metric&appid=9700137cb136670ff26733ee23088067",
@@ -79,18 +81,24 @@ function App() {
     cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
   }
 
-  return (
-    <div className="App container">
-      <header className="App-header">
-        <h1>Weather in {locationName}</h1>
-        <h1>{clockState}</h1>
-      </header>
+  if ( !(("none").includes(weatherConds) || weatherConds === 'undefined') ) { //Wait for Weather Data to come back before Drawing.
+    return (
+      <div className="App container">
+        <header className="App-header">
+          <h1>Weather in {locationName}</h1>
+          <h1>{clockState}</h1>
+        </header>
 
-      <div className='row d-flex justify-content-around'>
-        {cardDeck}
+        <div className='row d-flex justify-content-around'>
+          {cardDeck}
+        </div>
+
+        <div className='row'>
+          <ChartCard weatherConds={weatherConds}/>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;

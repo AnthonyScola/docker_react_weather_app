@@ -9,6 +9,11 @@ h2 {
   margin-bottom: 0!important;
 }
 
+h3 {
+  margin: auto;
+  text-align: center;
+}
+
 header {
   margin-top: 10px;
   margin-bottom: 20px;
