@@ -75,7 +75,7 @@ export default function ChartCard({ weatherConds, cardDate }) {
 
     <>
       <div className='col-xxl-6'>
-        <div className="card">
+        <div className="card chart-card">
           <div className="card-body">
             <h3>Temperature</h3>
             <LineChart key={'chart1'} chartData={formattedTempData} chartOptions={chartOptions}/>

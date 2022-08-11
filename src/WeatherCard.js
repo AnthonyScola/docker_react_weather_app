@@ -27,7 +27,7 @@ export default function WeatherCard({ weatherConds, cardDate }) {
     return(
       <div className='col'>
           <div className="card weather-cards">
-              <div className="card-body">
+              <div className="card-body pt-1 pb-0">
                   <h2 className="card-title">{cardDate}</h2>
                   <span>{weatherConds.weather[0].main} | {Math.round(weatherConds.temp.day)}° C</span>
                   <img src={conditionIconMap[weatherConds.weather[0].main]} title={weatherConds.weather[0].description}/>

@@ -78,22 +78,24 @@ function App() {
       var dateName = DateTime.now().setZone('Europe/Berlin').plus({days:i}).startOf('day').toLocaleString({weekday: 'long'});
     }
 
-    cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
+    if (i < 8){
+      cardDeck.push(<WeatherCard key={"weatherCard_"+i} weatherConds={weatherConds[i]} cardDate={dateName}/>);
+    }
+
   }
 
   if ( !(("none").includes(weatherConds) || weatherConds === 'undefined') ) { //Wait for Weather Data to come back before Drawing.
     return (
       <div className="App container">
         <header className="App-header">
-          <h1>Weather in {locationName}</h1>
-          <h1>{clockState}</h1>
+          <h1> <i class="bi bi-geo-alt-fill text-danger"></i> {locationName} {clockState}</h1>
         </header>
 
         <div className='row d-flex justify-content-around'>
           {cardDeck}
         </div>
 
-        <div className='row'>
+        <div className='row d-flex justify-content-center'>
           <ChartCard weatherConds={weatherConds}/>
         </div>
       </div>
